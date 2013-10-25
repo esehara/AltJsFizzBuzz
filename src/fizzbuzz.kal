@@ -1,0 +1,24 @@
+task is_buzz (x)
+    return x mod 5 == 0
+
+task is_fizz (x)
+    wait for buzz from is_buzz(x)
+    fizz = x mod 3 == 0
+    return [fizz, buzz]
+
+task fizzbuzz (x)
+    wait for fizzbuzz from is_fizz(x)
+    when fizzbuzz[0] and fizzbuzz[1]
+        return "FizzBuzz"
+    when fizzbuzz[0]
+        return "Fizz"
+    when fizzbuzz[1]
+        return "Buzz"
+    otherwise
+        return x
+
+x = 0
+until x is 99
+    x += 1
+    wait for result from fizzbuzz x
+    print result

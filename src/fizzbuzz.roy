@@ -1,0 +1,40 @@
+data Option a =
+  Some a | None
+
+let is_fizz x =
+  if x % 3 == 0 then
+     Some "Fizz"
+  else
+     None ()
+
+let is_buzz x m =
+  if x % 5 == 0 then 
+     match m
+       case (Some a) = Some (a ++ "Buzz")
+       case None = Some "Buzz"
+  else
+     m
+    
+let optionMonad = {
+    return: \x ->
+      Some x
+    bind: \x f -> match x
+      case (Some a) = f a
+      case None = None ()
+}
+
+let fizzbuzz x y =
+    if x > y then
+        console.log("")
+    else
+      let fizz = is_fizz x
+      let result = (do optionMonad
+          buzz <- is_buzz x fizz
+          return buzz
+      )
+      match result
+        case (Some a) = console.log a
+        case None = console.log x
+      fizzbuzz (x + 1) y
+
+fizzbuzz 1 100
